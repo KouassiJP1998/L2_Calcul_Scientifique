@@ -1,0 +1,43 @@
+#include <iostream>
+#include <cmath>
+#include <cstdio>
+#include <fstream>
+
+using namespace std;
+
+const double gravite = 9.81; // m.s^{-2}
+const double c = 2.0;
+
+/**
+t : temps à laquel la vitesse est voulue en Sc
+m : masse de l'objet en Kg
+n : sous intervalles CTE
+**/
+double vitesseEuler(double temps,double masse,int sousIntervalle){
+  double vitesse = 0.0;
+  double delta = temps/sousIntervalle;
+
+  for (double i = 0.0; i < temps; i++) {
+    vitesse = ((((-c)*vitesse*vitesse + masse*gravite)/masse)*delta) + vitesse;
+  }
+
+  return vitesse;
+}
+
+int csvWrite(){
+ 	  ofstream myfile;
+      myfile.open ("example.csv");
+      myfile << "T,V";
+      for (double i = 0.0; i < 100; i++) {
+        myfile << vitesseEuler(2*i,70.0,180) << "," <<vitesseEuler((2*i)+1,70.0,180)<<'\n';
+
+      }
+      myfile.close();
+      return 0;
+}
+
+int main() {
+  cout << vitesseEuler((3.0*60.0),70.0,1800) << '\n';
+  csvWrite();
+  return 0;
+}
